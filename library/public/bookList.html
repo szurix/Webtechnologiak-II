@@ -1,0 +1,14 @@
+<div class="container-fluid">
+	 <div class="col-md-12" id="bookList">
+	<table class="table table-hover">
+		<tr><td>ID</td><td>Cím</td><td>Író</td><td>Műfaj</td><td>Példány</td></tr>
+		<tr ng-repeat="book in books">
+			<td>{{book.id}}</td>
+			<td>{{book.title}}</td>
+			<td>{{book.author}}</td>
+			<td>{{book.genre}}</td>
+			<td>{{book.instance}}</td>		
+</tr> 
+	</table>
+</div>
+</div>

@@ -1,0 +1,127 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<title>Könyvtár</title>
+</head>
+<body ng-app="librarianManager" ng-controller="menuCtrl">
+	<div ng-include="'navbar.html'"></div>
+	<div ng-view></div>
+	<img ng-src="img/library.jpg" width="100%"/>
+	<script>
+		var library = angular.module("librarianManager", [ "ngRoute" ]);
+		library.config(function($routeProvider) {
+			$routeProvider
+				.when("/", {
+					templateUrl: "home.html"
+				})
+				.when("/login", {
+					controller: "userController"
+				})
+				.when("/bookList", {
+					templateUrl: "bookList.html",
+					controller: "bookController"
+				})
+				.when("/addBook", {
+					templateUrl: "addBook.html",
+					controller: "bookController"
+				})
+				.when("/addAuthor", {
+					templateUrl: "addAuthor.html",
+					controller: "authorController"
+				})
+				.when("/authorList", {
+					templateUrl: "authorList.html",
+					controller: "authorController"
+				})
+				.otherwise({
+					redirectTo: "/"
+				});
+		});
+			library.controller("menuCtrl", function($scope, $rootScope, $http, $location) {
+				$rootScope.newuser = {};
+				$rootScope.$on("$routeChangeStart", function(event, next, current) {
+					$http.get("/user").then(function(response) {
+						$rootScope.user = angular.copy(response.data);
+						if ($rootScope.user === "") {
+							$rootScope.user = undefined;
+						}
+					});
+					if (next.originalPath === "") {
+					} else if ($rootScope.user === undefined && next.originalPath !== "/" && next.originalPath !== "/login") {
+						$location.path("/login");
+					} else if ($rootScope.user !== undefined && next.originalPath === "/login") {
+						$location.path("/");
+					} else {
+					}
+				});
+			});
+			library.controller("userController", function($scope, $rootScope, $http, $location) {
+				$scope.login = function() {
+					console.log($rootScope.newuser);
+					$http.post("/login", $rootScope.newuser).then(
+						function(response) {
+							$scope.statusCode = response.status;
+							if ($scope.statusCode === 200) {
+								$rootScope.user = angular.copy(response.data);
+								if ($rootScope.user === "") {
+									$rootScope.user = undefined;
+								}
+								$rootScope.newuser = {};
+								$location.path("/welcome");
+							}
+						},
+						function(response) {
+							$scope.statusCode = response.status;
+						}
+					);
+				};
+				$scope.logout = function() {
+					$http.post("/logout").then(
+						function(response) {
+							$scope.statusCode = response.status;
+							$location.path("/");
+						},
+						function(response) {
+							$scope.statusCode = response.status;
+						}
+					);
+					$rootScope.user = undefined;
+				};
+			});
+			library.controller("bookController", function($scope, $http) {
+				$http.get("/books").then(function(response) {
+					$scope.books = response.data;
+				});
+				$scope.addBook = function() {
+					$http.post("/addBook", $scope.book).then(
+						function(response) {
+							$scope.statusCode = response.status;
+						},
+						function(response) {
+							$scope.statusCode = response.status;
+						}
+					);
+				};
+			});
+			library.controller("authorController", function($scope, $http) {
+				$http.get("/authors").then(function(response) {
+					$scope.authors = response.data;
+				});
+				$scope.addAuthor = function() {
+					$http.post("/addAuthor", $scope.author).then(
+						function(response) {
+							$scope.statusCode = response.status;
+						},
+						function(response) {
+							$scope.statusCode = response.status;
+						}
+					);
+				};
+			});
+	</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<div class="container-fluid">
+<div class="col-md-12" id="authorList">
+	<table class="table table-hover">
+		<tr><td>ID</td><td>Név</td><td>Nemzetiség</td><td>Születési dátum</td></tr>
+		<tr ng-repeat="author in authors">
+			<td>{{author.id}}</td>
+			<td>{{author.name}}</td>
+			<td>{{author.nationality}}</td>
+			<td>{{author.birth}}</td>		
+</tr> 
+	</table>
+</div>
+</div>

@@ -1,0 +1,26 @@
+<div class="container-fluid">
+	<div ng-if="statusCode == 200">
+		<div class="alert alert-success">
+			<p><strong>Sikerült!</strong> Az író hozzáadva.</p>
+		</div>
+	</div>
+	<form ng-submit="addAuthor()">
+		<div class="form-group">
+			<label>ID</label>
+			<input type="number" min="1" class="form-control" ng-model="author.id" placeholder="ID" required />
+		</div>
+		<div class="form-group">
+			<label>Név</label>
+			<input type="text" class="form-control" ng-model="author.name" placeholder="Név" required />
+		</div>
+		<div class="form-group">
+			<label>Nemzetiség</label>
+			<input type="text" class="form-control" ng-model="author.nationality" placeholder="Nemzetiség" required />
+		</div>
+		<div class="form-group">
+			<label>Születési dátum</label>
+			<input type="date" class="form-control" ng-model="author.birth" placeholder="Név" required />
+		</div>
+		<button type="submit" class="btn btn-default">Hozzáad</button>
+	</form>
+</div>

@@ -1,0 +1,23 @@
+<div class="container-fluid">
+	<div ng-if="statusCode == 201">
+		<div class="alert alert-warning">
+			<p><strong>Hiba!</strong>Hibás felhasználónév vagy jelszó!</p>
+		</div>
+	</div>
+	<div ng-if="statusCode >= 500">
+		<div class="alert alert-dander">
+			<p><strong>Hiba!</strong>Próbálja újra!</p>
+		</div>
+	</div>
+	<form ng-submit="login()">
+		<div class="form-group">
+			<label>Felhasználónév</label>
+			<input type="text" ng-model="newuser.username" class="form-control" placeholder="Felhasználónév" />
+		</div>
+		<div class="form-group">
+			<label>Jelszó</label>
+			<input type="password" ng-model="newuser.password" class="form-control" placeholder="Jelszó" />
+		</div>
+		<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-log-in"></i>Bejelentkezés</button>
+	</form>
+</div>
